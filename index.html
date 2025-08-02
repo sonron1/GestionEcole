@@ -1,0 +1,1834 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>GestionEcole - Système de Gestion Universitaire</title>
+    <link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,100..1000;1,9..40,100..1000&display=swap" rel="stylesheet">
+    <link href="css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" rel="stylesheet">
+    <link href="css/style.css" rel="stylesheet">
+</head>
+<body>
+<!-- Sidebar -->
+<div class="sidebar" id="sidebar">
+    <div class="sidebar-header">
+        <div class="brand">
+            <i class="fas fa-graduation-cap"></i>
+            <span>GestionEcole</span>
+        </div>
+        <button class="sidebar-toggle" id="sidebarToggle">
+            <i class="fas fa-bars"></i>
+        </button>
+    </div>
+
+    <nav class="sidebar-nav">
+        <div class="nav-section">
+            <div class="nav-section-header">Principal</div>
+            <ul class="nav-list">
+                <li class="nav-item">
+                    <a href="#" onclick="showSection('dashboard')" class="nav-link active">
+                        <i class="fas fa-tachometer-alt"></i>
+                        <span>Tableau de bord</span>
+                    </a>
+                </li>
+            </ul>
+        </div>
+
+        <div class="nav-section">
+            <div class="nav-section-header">Gestion</div>
+            <ul class="nav-list">
+                <li class="nav-item">
+                    <a href="#" onclick="showSection('etudiants')" class="nav-link">
+                        <i class="fas fa-user-graduate"></i>
+                        <span>Étudiants</span>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="#" onclick="showSection('enseignants')" class="nav-link">
+                        <i class="fas fa-chalkboard-teacher"></i>
+                        <span>Enseignants</span>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="#" onclick="showSection('cours')" class="nav-link">
+                        <i class="fas fa-book"></i>
+                        <span>Cours & Modules</span>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="#" onclick="showSection('emploi-temps')" class="nav-link">
+                        <i class="fas fa-calendar-alt"></i>
+                        <span>Emploi du temps</span>
+                    </a>
+                </li>
+            </ul>
+        </div>
+
+        <div class="nav-section">
+            <div class="nav-section-header">Académique</div>
+            <ul class="nav-list">
+                <li class="nav-item">
+                    <a href="#" onclick="showSection('notes')" class="nav-link">
+                        <i class="fas fa-chart-line"></i>
+                        <span>Notes & Évaluations</span>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="#" onclick="showSection('absences')" class="nav-link">
+                        <i class="fas fa-user-times"></i>
+                        <span>Absences</span>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="#" onclick="showSection('examens')" class="nav-link">
+                        <i class="fas fa-file-alt"></i>
+                        <span>Examens</span>
+                    </a>
+                </li>
+            </ul>
+        </div>
+
+        <div class="nav-section">
+            <div class="nav-section-header">Financier</div>
+            <ul class="nav-list">
+                <li class="nav-item">
+                    <a href="#" onclick="showSection('paiements')" class="nav-link">
+                        <i class="fas fa-credit-card"></i>
+                        <span>Paiements</span>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="#" onclick="showSection('frais')" class="nav-link">
+                        <i class="fas fa-receipt"></i>
+                        <span>Frais universitaires</span>
+                    </a>
+                </li>
+            </ul>
+        </div>
+
+        <div class="nav-section">
+            <div class="nav-section-header">Autres</div>
+            <ul class="nav-list">
+                <li class="nav-item">
+                    <a href="#" onclick="showSection('communication')" class="nav-link">
+                        <i class="fas fa-comments"></i>
+                        <span>Communication</span>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="#" onclick="showSection('documents')" class="nav-link">
+                        <i class="fas fa-file-pdf"></i>
+                        <span>Documents</span>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="#" onclick="showSection('rapports')" class="nav-link">
+                        <i class="fas fa-chart-bar"></i>
+                        <span>Rapports</span>
+                    </a>
+                </li>
+            </ul>
+        </div>
+    </nav>
+
+    <div class="sidebar-footer">
+        <div class="user-profile">
+            <div class="user-avatar">
+                <i class="fas fa-user"></i>
+            </div>
+            <div class="user-info">
+                <div class="user-name">Admin</div>
+                <div class="user-role">Administrateur</div>
+            </div>
+            <div class="user-actions">
+                <button class="btn-user-menu" onclick="logout()">
+                    <i class="fas fa-sign-out-alt"></i>
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Main Content -->
+<div class="main-content" id="mainContent">
+    <!-- Top Header -->
+    <header class="top-header">
+        <div class="header-left">
+            <button class="mobile-sidebar-toggle" id="mobileSidebarToggle">
+                <i class="fas fa-bars"></i>
+            </button>
+            <div class="breadcrumb">
+                <span id="currentSectionTitle">Tableau de bord</span>
+            </div>
+        </div>
+        <div class="header-right">
+            <div class="header-actions">
+                <button class="btn-action" title="Notifications">
+                    <i class="fas fa-bell"></i>
+                    <span class="badge">3</span>
+                </button>
+                <button class="btn-action" title="Messages">
+                    <i class="fas fa-envelope"></i>
+                    <span class="badge">5</span>
+                </button>
+                <button class="btn-action" title="Recherche">
+                    <i class="fas fa-search"></i>
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <!-- Content Area -->
+    <div class="content-area">
+        <!-- Section Tableau de bord -->
+        <div id="dashboard-section" class="content-section active">
+            <div class="section-header">
+                <h1>Tableau de bord</h1>
+                <p>Vue d'ensemble de votre système de gestion universitaire</p>
+            </div>
+
+            <!-- Cards statistiques -->
+            <div class="stats-grid">
+                <div class="stat-card primary">
+                    <div class="stat-icon">
+                        <i class="fas fa-user-graduate"></i>
+                    </div>
+                    <div class="stat-content">
+                        <div class="stat-number" id="total-students">1,250</div>
+                        <div class="stat-label">Étudiants</div>
+                        <div class="stat-trend positive">
+                            <i class="fas fa-arrow-up"></i> +12%
+                        </div>
+                    </div>
+                </div>
+
+                <div class="stat-card success">
+                    <div class="stat-icon">
+                        <i class="fas fa-chalkboard-teacher"></i>
+                    </div>
+                    <div class="stat-content">
+                        <div class="stat-number" id="total-teachers">85</div>
+                        <div class="stat-label">Enseignants</div>
+                        <div class="stat-trend positive">
+                            <i class="fas fa-arrow-up"></i> +3%
+                        </div>
+                    </div>
+                </div>
+
+                <div class="stat-card warning">
+                    <div class="stat-icon">
+                        <i class="fas fa-book"></i>
+                    </div>
+                    <div class="stat-content">
+                        <div class="stat-number" id="total-courses">156</div>
+                        <div class="stat-label">Cours</div>
+                        <div class="stat-trend neutral">
+                            <i class="fas fa-minus"></i> 0%
+                        </div>
+                    </div>
+                </div>
+
+                <div class="stat-card info">
+                    <div class="stat-icon">
+                        <i class="fas fa-file-alt"></i>
+                    </div>
+                    <div class="stat-content">
+                        <div class="stat-number" id="active-exams">12</div>
+                        <div class="stat-label">Examens en cours</div>
+                        <div class="stat-trend negative">
+                            <i class="fas fa-arrow-down"></i> -5%
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Charts and Recent Activity -->
+            <div class="dashboard-grid">
+                <div class="dashboard-card chart-card">
+                    <div class="card-header">
+                        <h3>Évolution des inscriptions</h3>
+                        <div class="card-actions">
+                            <button class="btn-card-action">
+                                <i class="fas fa-ellipsis-h"></i>
+                            </button>
+                        </div>
+                    </div>
+                    <div class="card-content">
+                        <canvas id="inscriptionsChart"></canvas>
+                    </div>
+                </div>
+
+                <div class="dashboard-card">
+                    <div class="card-header">
+                        <h3>Activités récentes</h3>
+                    </div>
+                    <div class="card-content">
+                        <div class="activity-list">
+                            <div class="activity-item">
+                                <div class="activity-icon success">
+                                    <i class="fas fa-user-plus"></i>
+                                </div>
+                                <div class="activity-content">
+                                    <div class="activity-title">Nouveau paiement reçu</div>
+                                    <div class="activity-subtitle">Jean Dupont - Frais de scolarité</div>
+                                    <div class="activity-time">Il y a 5 minutes</div>
+                                </div>
+                            </div>
+
+                            <div class="activity-item">
+                                <div class="activity-icon warning">
+                                    <i class="fas fa-calendar"></i>
+                                </div>
+                                <div class="activity-content">
+                                    <div class="activity-title">Examen programmé</div>
+                                    <div class="activity-subtitle">Mathématiques - Licence 2</div>
+                                    <div class="activity-time">Il y a 15 minutes</div>
+                                </div>
+                            </div>
+
+                            <div class="activity-item">
+                                <div class="activity-icon primary">
+                                    <i class="fas fa-user-graduate"></i>
+                                </div>
+                                <div class="activity-content">
+                                    <div class="activity-title">3 nouvelles inscriptions</div>
+                                    <div class="activity-subtitle">Département Informatique</div>
+                                    <div class="activity-time">Il y a 1 heure</div>
+                                </div>
+                            </div>
+
+                            <div class="activity-item">
+                                <div class="activity-icon info">
+                                    <i class="fas fa-file-alt"></i>
+                                </div>
+                                <div class="activity-content">
+                                    <div class="activity-title">Document généré</div>
+                                    <div class="activity-subtitle">Rapport mensuel des notes</div>
+                                    <div class="activity-time">Il y a 2 heures</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="dashboard-card">
+                    <div class="card-header">
+                        <h3>Répartition par département</h3>
+                    </div>
+                    <div class="card-content">
+                        <canvas id="departmentChart"></canvas>
+                    </div>
+                </div>
+
+                <div class="dashboard-card">
+                    <div class="card-header">
+                        <h3>Actions rapides</h3>
+                    </div>
+                    <div class="card-content">
+                        <div class="quick-actions">
+                            <button class="quick-action-btn" onclick="showAddStudentModal()">
+                                <i class="fas fa-user-plus"></i>
+                                <span>Ajouter étudiant</span>
+                            </button>
+                            <button class="quick-action-btn" onclick="showAddCourseModal()">
+                                <i class="fas fa-plus"></i>
+                                <span>Nouveau cours</span>
+                            </button>
+                            <button class="quick-action-btn" onclick="showSection('paiements')">
+                                <i class="fas fa-credit-card"></i>
+                                <span>Paiements</span>
+                            </button>
+                            <button class="quick-action-btn" onclick="generateReport()">
+                                <i class="fas fa-file-download"></i>
+                                <span>Générer rapport</span>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Section Étudiants -->
+        <div id="etudiants-section" class="content-section">
+            <div class="section-header">
+                <div class="section-title">
+                    <h1>Gestion des Étudiants</h1>
+                    <p>Gérez les informations et le suivi de vos étudiants</p>
+                </div>
+                <div class="section-actions">
+                    <button class="btn btn-primary" onclick="showAddStudentModal()">
+                        <i class="fas fa-plus"></i>
+                        Ajouter un étudiant
+                    </button>
+                </div>
+            </div>
+
+            <!-- Filters -->
+            <div class="filters-card">
+                <div class="filters-grid">
+                    <div class="filter-item">
+                        <label>Rechercher</label>
+                        <div class="input-group">
+                            <i class="fas fa-search"></i>
+                            <input type="text" placeholder="Nom, prénom ou numéro..." id="searchStudent" class="form-control">
+                        </div>
+                    </div>
+                    <div class="filter-item">
+                        <label>Département</label>
+                        <select class="form-select" id="filterDepartment">
+                            <option value="">Tous les départements</option>
+                            <option value="informatique">Informatique</option>
+                            <option value="mathematiques">Mathématiques</option>
+                            <option value="physique">Physique</option>
+                        </select>
+                    </div>
+                    <div class="filter-item">
+                        <label>Niveau</label>
+                        <select class="form-select" id="filterNiveau">
+                            <option value="">Tous les niveaux</option>
+                            <option value="L1">Licence 1</option>
+                            <option value="L2">Licence 2</option>
+                            <option value="L3">Licence 3</option>
+                            <option value="M1">Master 1</option>
+                            <option value="M2">Master 2</option>
+                        </select>
+                    </div>
+                    <div class="filter-item">
+                        <button class="btn btn-secondary" onclick="filterStudents()">
+                            <i class="fas fa-filter"></i>
+                            Filtrer
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Table -->
+            <div class="table-card">
+                <div class="table-header">
+                    <h3>Liste des étudiants</h3>
+                    <div class="table-actions">
+                        <button class="btn-table-action" title="Exporter">
+                            <i class="fas fa-download"></i>
+                        </button>
+                        <button class="btn-table-action" title="Imprimer">
+                            <i class="fas fa-print"></i>
+                        </button>
+                    </div>
+                </div>
+                <div class="table-content">
+                    <table class="custom-table" id="studentsTable">
+                        <thead>
+                        <tr>
+                            <th>Photo</th>
+                            <th>Nom complet</th>
+                            <th>Numéro étudiant</th>
+                            <th>Département</th>
+                            <th>Niveau</th>
+                            <th>Statut</th>
+                            <th>Actions</th>
+                        </tr>
+                        </thead>
+                        <!-- Remplacer le contenu du tbody de la section étudiants -->
+                        <tbody id="studentsTableBody">
+                        <tr>
+                            <td>
+                                <img src="https://images.unsplash.com/photo-1494790108755-2616b612b494?w=40&h=40&fit=crop&crop=face" class="profile-img" alt="Photo étudiant">
+                            </td>
+                            <td>
+                                <div>
+                                    <div style="font-weight: 600; color: var(--gray-900);">Marie Dubois</div>
+                                    <div style="font-size: 0.8rem; color: var(--gray-500);">marie.dubois@email.com</div>
+                                </div>
+                            </td>
+                            <td><span style="font-family: monospace; font-weight: 600;">20230001</span></td>
+                            <td>
+                                <div style="display: flex; align-items: center; gap: 8px;">
+                                    <div style="width: 8px; height: 8px; border-radius: 50%; background: var(--primary-color);"></div>
+                                    Informatique
+                                </div>
+                            </td>
+                            <td><span class="badge bg-primary">Licence 2</span></td>
+                            <td><span class="badge bg-success">Actif</span></td>
+                            <td>
+                                <div style="display: flex; gap: 4px;">
+                                    <button class="btn btn-sm btn-info" title="Voir profil">
+                                        <i class="fas fa-eye"></i>
+                                    </button>
+                                    <button class="btn btn-sm btn-warning" title="Modifier">
+                                        <i class="fas fa-edit"></i>
+                                    </button>
+                                    <button class="btn btn-sm btn-secondary" title="Bulletins">
+                                        <i class="fas fa-file-alt"></i>
+                                    </button>
+                                    <button class="btn btn-sm btn-primary" title="Contacter">
+                                        <i class="fas fa-envelope"></i>
+                                    </button>
+                                </div>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <img src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=40&h=40&fit=crop&crop=face" class="profile-img" alt="Photo étudiant">
+                            </td>
+                            <td>
+                                <div>
+                                    <div style="font-weight: 600; color: var(--gray-900);">Jean Martin</div>
+                                    <div style="font-size: 0.8rem; color: var(--gray-500);">jean.martin@email.com</div>
+                                </div>
+                            </td>
+                            <td><span style="font-family: monospace; font-weight: 600;">20230002</span></td>
+                            <td>
+                                <div style="display: flex; align-items: center; gap: 8px;">
+                                    <div style="width: 8px; height: 8px; border-radius: 50%; background: var(--success-color);"></div>
+                                    Mathématiques
+                                </div>
+                            </td>
+                            <td><span class="badge bg-info">Licence 3</span></td>
+                            <td><span class="badge bg-success">Actif</span></td>
+                            <td>
+                                <div style="display: flex; gap: 4px;">
+                                    <button class="btn btn-sm btn-info" title="Voir profil">
+                                        <i class="fas fa-eye"></i>
+                                    </button>
+                                    <button class="btn btn-sm btn-warning" title="Modifier">
+                                        <i class="fas fa-edit"></i>
+                                    </button>
+                                    <button class="btn btn-sm btn-secondary" title="Bulletins">
+                                        <i class="fas fa-file-alt"></i>
+                                    </button>
+                                    <button class="btn btn-sm btn-primary" title="Contacter">
+                                        <i class="fas fa-envelope"></i>
+                                    </button>
+                                </div>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <img src="https://images.unsplash.com/photo-1438761681033-6461ffad8d80?w=40&h=40&fit=crop&crop=face" class="profile-img" alt="Photo étudiant">
+                            </td>
+                            <td>
+                                <div>
+                                    <div style="font-weight: 600; color: var(--gray-900);">Sophie Laurent</div>
+                                    <div style="font-size: 0.8rem; color: var(--gray-500);">sophie.laurent@email.com</div>
+                                </div>
+                            </td>
+                            <td><span style="font-family: monospace; font-weight: 600;">20230003</span></td>
+                            <td>
+                                <div style="display: flex; align-items: center; gap: 8px;">
+                                    <div style="width: 8px; height: 8px; border-radius: 50%; background: var(--warning-color);"></div>
+                                    Physique
+                                </div>
+                            </td>
+                            <td><span class="badge bg-warning">Licence 1</span></td>
+                            <td><span class="badge bg-warning">En probation</span></td>
+                            <td>
+                                <div style="display: flex; gap: 4px;">
+                                    <button class="btn btn-sm btn-info" title="Voir profil">
+                                        <i class="fas fa-eye"></i>
+                                    </button>
+                                    <button class="btn btn-sm btn-warning" title="Modifier">
+                                        <i class="fas fa-edit"></i>
+                                    </button>
+                                    <button class="btn btn-sm btn-secondary" title="Bulletins">
+                                        <i class="fas fa-file-alt"></i>
+                                    </button>
+                                    <button class="btn btn-sm btn-danger" title="Alerte">
+                                        <i class="fas fa-exclamation-triangle"></i>
+                                    </button>
+                                </div>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <img src="https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=40&h=40&fit=crop&crop=face" class="profile-img" alt="Photo étudiant">
+                            </td>
+                            <td>
+                                <div>
+                                    <div style="font-weight: 600; color: var(--gray-900);">Thomas Dubois</div>
+                                    <div style="font-size: 0.8rem; color: var(--gray-500);">thomas.dubois@email.com</div>
+                                </div>
+                            </td>
+                            <td><span style="font-family: monospace; font-weight: 600;">20230004</span></td>
+                            <td>
+                                <div style="display: flex; align-items: center; gap: 8px;">
+                                    <div style="width: 8px; height: 8px; border-radius: 50%; background: var(--primary-color);"></div>
+                                    Informatique
+                                </div>
+                            </td>
+                            <td><span class="badge bg-success">Master 1</span></td>
+                            <td><span class="badge bg-success">Actif</span></td>
+                            <td>
+                                <div style="display: flex; gap: 4px;">
+                                    <button class="btn btn-sm btn-info" title="Voir profil">
+                                        <i class="fas fa-eye"></i>
+                                    </button>
+                                    <button class="btn btn-sm btn-warning" title="Modifier">
+                                        <i class="fas fa-edit"></i>
+                                    </button>
+                                    <button class="btn btn-sm btn-secondary" title="Bulletins">
+                                        <i class="fas fa-file-alt"></i>
+                                    </button>
+                                    <button class="btn btn-sm btn-primary" title="Contacter">
+                                        <i class="fas fa-envelope"></i>
+                                    </button>
+                                </div>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <img src="https://images.unsplash.com/photo-1544725176-7c40e5a71c5e?w=40&h=40&fit=crop&crop=face" class="profile-img" alt="Photo étudiant">
+                            </td>
+                            <td>
+                                <div>
+                                    <div style="font-weight: 600; color: var(--gray-900);">Emma Rodriguez</div>
+                                    <div style="font-size: 0.8rem; color: var(--gray-500);">emma.rodriguez@email.com</div>
+                                </div>
+                            </td>
+                            <td><span style="font-family: monospace; font-weight: 600;">20230005</span></td>
+                            <td>
+                                <div style="display: flex; align-items: center; gap: 8px;">
+                                    <div style="width: 8px; height: 8px; border-radius: 50%; background: var(--success-color);"></div>
+                                    Mathématiques
+                                </div>
+                            </td>
+                            <td><span class="badge bg-primary">Licence 2</span></td>
+                            <td><span class="badge bg-info">Redoublant</span></td>
+                            <td>
+                                <div style="display: flex; gap: 4px;">
+                                    <button class="btn btn-sm btn-info" title="Voir profil">
+                                        <i class="fas fa-eye"></i>
+                                    </button>
+                                    <button class="btn btn-sm btn-warning" title="Modifier">
+                                        <i class="fas fa-edit"></i>
+                                    </button>
+                                    <button class="btn btn-sm btn-secondary" title="Bulletins">
+                                        <i class="fas fa-file-alt"></i>
+                                    </button>
+                                    <button class="btn btn-sm btn-info" title="Suivi spécial">
+                                        <i class="fas fa-chart-line"></i>
+                                    </button>
+                                </div>
+                            </td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+
+        <!-- Autres sections seront ajoutées de la même manière -->
+        <div id="enseignants-section" class="content-section">
+            <div class="section-header">
+                <div class="section-title">
+                    <h1>Gestion des Enseignants</h1>
+                    <p>Gérez le corps professoral et leurs spécialités</p>
+                </div>
+                <div class="section-actions">
+                    <button class="btn btn-primary" onclick="showAddTeacherModal()">
+                        <i class="fas fa-plus"></i>
+                        Ajouter un enseignant
+                    </button>
+                </div>
+            </div>
+
+            <div class="table-card">
+                <div class="table-header">
+                    <h3>Liste des enseignants</h3>
+                </div>
+                <div class="table-content">
+                    <table class="custom-table" id="teachersTable">
+                        <thead>
+                        <tr>
+                            <th>Nom complet</th>
+                            <th>Département</th>
+                            <th>Spécialité</th>
+                            <th>Email</th>
+                            <th>Téléphone</th>
+                            <th>Statut</th>
+                            <th>Actions</th>
+                        </tr>
+                        </thead>
+                        <tbody id="teachersTableBody">
+                        <!-- Les données seront chargées dynamiquement -->
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+
+        <!-- Section Cours -->
+        <div id="cours-section" class="content-section">
+            <div class="section-header">
+                <div class="section-title">
+                    <h1>Gestion des Cours</h1>
+                    <p>Organisez et gérez le catalogue de cours</p>
+                </div>
+                <div class="section-actions">
+                    <button class="btn btn-primary" onclick="showAddCourseModal()">
+                        <i class="fas fa-plus"></i>
+                        Ajouter un cours
+                    </button>
+                </div>
+            </div>
+
+            <div class="table-card">
+                <div class="table-header">
+                    <h3>Liste des cours</h3>
+                </div>
+                <div class="table-content">
+                    <table class="custom-table" id="coursesTable">
+                        <thead>
+                        <tr>
+                            <th>Code</th>
+                            <th>Nom du cours</th>
+                            <th>Enseignant</th>
+                            <th>Département</th>
+                            <th>Niveau</th>
+                            <th>Crédits</th>
+                            <th>Étudiants inscrits</th>
+                            <th>Actions</th>
+                        </tr>
+                        </thead>
+                        <tbody id="coursesTableBody">
+                        <!-- Les données seront chargées dynamiquement -->
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+
+        <!-- Section Emploi du temps -->
+        <div id="emploi-temps-section" class="content-section">
+            <div class="section-header">
+                <div class="section-title">
+                    <h1>Emploi du Temps</h1>
+                    <p>Planifiez et gérez les horaires de cours</p>
+                </div>
+                <div class="section-actions">
+                    <button class="btn btn-secondary" onclick="app.exportSchedule()">
+                        <i class="fas fa-download"></i>
+                        Exporter
+                    </button>
+                    <button class="btn btn-primary" onclick="app.showAddScheduleModal()">
+                        <i class="fas fa-plus"></i>
+                        Ajouter un créneau
+                    </button>
+                </div>
+            </div>
+
+            <!-- Filtres de vue -->
+            <div class="filters-card">
+                <div class="filters-grid">
+                    <div class="filter-item">
+                        <label>Vue</label>
+                        <select class="form-select" id="scheduleView" onchange="app.changeScheduleView()">
+                            <option value="week">Semaine</option>
+                            <option value="month">Mois</option>
+                            <option value="day">Jour</option>
+                        </select>
+                    </div>
+                    <div class="filter-item">
+                        <label>Département</label>
+                        <select class="form-select" id="filterScheduleDepartment" onchange="app.filterSchedule()">
+                            <option value="">Tous les départements</option>
+                            <option value="informatique">Informatique</option>
+                            <option value="mathematiques">Mathématiques</option>
+                            <option value="physique">Physique</option>
+                        </select>
+                    </div>
+                    <div class="filter-item">
+                        <label>Niveau</label>
+                        <select class="form-select" id="filterScheduleLevel" onchange="app.filterSchedule()">
+                            <option value="">Tous les niveaux</option>
+                            <option value="L1">Licence 1</option>
+                            <option value="L2">Licence 2</option>
+                            <option value="L3">Licence 3</option>
+                            <option value="M1">Master 1</option>
+                            <option value="M2">Master 2</option>
+                        </select>
+                    </div>
+                    <div class="filter-item">
+                        <label>Enseignant</label>
+                        <select class="form-select" id="filterScheduleTeacher" onchange="app.filterSchedule()">
+                            <option value="">Tous les enseignants</option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Calendrier -->
+            <div class="calendar-container">
+                <div class="calendar-header">
+                    <div class="calendar-navigation">
+                        <button class="btn btn-secondary" onclick="app.previousWeek()">
+                            <i class="fas fa-chevron-left"></i>
+                        </button>
+                        <h3 id="currentWeekTitle">Semaine du 4 - 10 Décembre 2023</h3>
+                        <button class="btn btn-secondary" onclick="app.nextWeek()">
+                            <i class="fas fa-chevron-right"></i>
+                        </button>
+                    </div>
+                    <button class="btn btn-primary" onclick="app.goToToday()">Aujourd'hui</button>
+                </div>
+
+                <div class="calendar-grid" id="scheduleCalendar">
+                    <!-- Vue semaine -->
+                    <div class="week-view" id="weekView">
+                        <div class="time-column">
+                            <div class="time-header"></div>
+                            <div class="time-slot" data-time="08:00">08:00</div>
+                            <div class="time-slot" data-time="09:00">09:00</div>
+                            <div class="time-slot" data-time="10:00">10:00</div>
+                            <div class="time-slot" data-time="11:00">11:00</div>
+                            <div class="time-slot" data-time="12:00">12:00</div>
+                            <div class="time-slot" data-time="13:00">13:00</div>
+                            <div class="time-slot" data-time="14:00">14:00</div>
+                            <div class="time-slot" data-time="15:00">15:00</div>
+                            <div class="time-slot" data-time="16:00">16:00</div>
+                            <div class="time-slot" data-time="17:00">17:00</div>
+                            <div class="time-slot" data-time="18:00">18:00</div>
+                        </div>
+
+                        <div class="days-container">
+                            <div class="day-column" data-day="monday">
+                                <div class="day-header">
+                                    <div class="day-name">Lundi</div>
+                                    <div class="day-date">4 Déc</div>
+                                </div>
+                                <div class="day-slots" id="mondaySlots">
+                                    <!-- Les créneaux seront ajoutés dynamiquement -->
+                                </div>
+                            </div>
+
+                            <div class="day-column" data-day="tuesday">
+                                <div class="day-header">
+                                    <div class="day-name">Mardi</div>
+                                    <div class="day-date">5 Déc</div>
+                                </div>
+                                <div class="day-slots" id="tuesdaySlots">
+                                    <!-- Les créneaux seront ajoutés dynamiquement -->
+                                </div>
+                            </div>
+
+                            <div class="day-column" data-day="wednesday">
+                                <div class="day-header">
+                                    <div class="day-name">Mercredi</div>
+                                    <div class="day-date">6 Déc</div>
+                                </div>
+                                <div class="day-slots" id="wednesdaySlots">
+                                    <!-- Les créneaux seront ajoutés dynamiquement -->
+                                </div>
+                            </div>
+
+                            <div class="day-column" data-day="thursday">
+                                <div class="day-header">
+                                    <div class="day-name">Jeudi</div>
+                                    <div class="day-date">7 Déc</div>
+                                </div>
+                                <div class="day-slots" id="thursdaySlots">
+                                    <!-- Les créneaux seront ajoutés dynamiquement -->
+                                </div>
+                            </div>
+
+                            <div class="day-column" data-day="friday">
+                                <div class="day-header">
+                                    <div class="day-name">Vendredi</div>
+                                    <div class="day-date">8 Déc</div>
+                                </div>
+                                <div class="day-slots" id="fridaySlots">
+                                    <!-- Les créneaux seront ajoutés dynamiquement -->
+                                </div>
+                            </div>
+
+                            <div class="day-column" data-day="saturday">
+                                <div class="day-header">
+                                    <div class="day-name">Samedi</div>
+                                    <div class="day-date">9 Déc</div>
+                                </div>
+                                <div class="day-slots" id="saturdaySlots">
+                                    <!-- Les créneaux seront ajoutés dynamiquement -->
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Légende -->
+            <div class="legend-card">
+                <h4>Légende</h4>
+                <div class="legend-items">
+                    <div class="legend-item">
+                        <div class="legend-color" style="background: var(--primary-color);"></div>
+                        <span>Cours magistral</span>
+                    </div>
+                    <div class="legend-item">
+                        <div class="legend-color" style="background: var(--success-color);"></div>
+                        <span>Travaux dirigés</span>
+                    </div>
+                    <div class="legend-item">
+                        <div class="legend-color" style="background: var(--info-color);"></div>
+                        <span>Travaux pratiques</span>
+                    </div>
+                    <div class="legend-item">
+                        <div class="legend-color" style="background: var(--warning-color);"></div>
+                        <span>Examen</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Ajouter ces sections APRÈS la section examens-section -->
+
+        <!-- Section Notes & Évaluations -->
+        <div id="notes-section" class="content-section">
+            <div class="section-header">
+                <div class="section-title">
+                    <h1>Notes & Évaluations</h1>
+                    <p>Gestion des notes et bulletins des étudiants</p>
+                </div>
+                <div class="section-actions">
+                    <button class="btn btn-secondary">
+                        <i class="fas fa-file-export"></i>
+                        Exporter notes
+                    </button>
+                    <button class="btn btn-primary">
+                        <i class="fas fa-plus"></i>
+                        Saisir notes
+                    </button>
+                </div>
+            </div>
+
+            <!-- Statistiques des notes -->
+            <div class="stats-grid">
+                <div class="stat-card success">
+                    <div class="stat-icon">
+                        <i class="fas fa-chart-line"></i>
+                    </div>
+                    <div class="stat-content">
+                        <div class="stat-number">14.2</div>
+                        <div class="stat-label">Moyenne générale</div>
+                        <div class="stat-trend positive">
+                            <i class="fas fa-arrow-up"></i> +0.3 points
+                        </div>
+                    </div>
+                </div>
+
+                <div class="stat-card info">
+                    <div class="stat-icon">
+                        <i class="fas fa-trophy"></i>
+                    </div>
+                    <div class="stat-content">
+                        <div class="stat-number">89%</div>
+                        <div class="stat-label">Taux de réussite</div>
+                        <div class="stat-trend positive">
+                            <i class="fas fa-arrow-up"></i> +5% ce semestre
+                        </div>
+                    </div>
+                </div>
+
+                <div class="stat-card warning">
+                    <div class="stat-icon">
+                        <i class="fas fa-exclamation-triangle"></i>
+                    </div>
+                    <div class="stat-content">
+                        <div class="stat-number">45</div>
+                        <div class="stat-label">Étudiants en difficulté</div>
+                        <div class="stat-trend negative">
+                            <i class="fas fa-arrow-down"></i> Moyenne < 10
+                        </div>
+                    </div>
+                </div>
+
+                <div class="stat-card primary">
+                    <div class="stat-icon">
+                        <i class="fas fa-clipboard-check"></i>
+                    </div>
+                    <div class="stat-content">
+                        <div class="stat-number">156</div>
+                        <div class="stat-label">Évaluations saisies</div>
+                        <div class="stat-trend neutral">
+                            <i class="fas fa-check"></i> Ce mois
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Filtres pour les notes -->
+            <div class="filters-card">
+                <div class="filters-grid">
+                    <div class="filter-item">
+                        <label>Rechercher étudiant</label>
+                        <div class="input-group">
+                            <i class="fas fa-search"></i>
+                            <input type="text" placeholder="Nom, prénom ou numéro..." id="searchGrades">
+                        </div>
+                    </div>
+                    <div class="filter-item">
+                        <label>Matière</label>
+                        <select class="form-select" id="filterSubject">
+                            <option value="">Toutes les matières</option>
+                            <option value="mathematiques">Mathématiques</option>
+                            <option value="informatique">Informatique</option>
+                            <option value="physique">Physique</option>
+                            <option value="anglais">Anglais</option>
+                        </select>
+                    </div>
+                    <div class="filter-item">
+                        <label>Niveau</label>
+                        <select class="form-select" id="filterGradeLevel">
+                            <option value="">Tous les niveaux</option>
+                            <option value="L1">Licence 1</option>
+                            <option value="L2">Licence 2</option>
+                            <option value="L3">Licence 3</option>
+                            <option value="M1">Master 1</option>
+                            <option value="M2">Master 2</option>
+                        </select>
+                    </div>
+                    <div class="filter-item">
+                        <label>Semestre</label>
+                        <select class="form-select" id="filterSemester">
+                            <option value="current">Semestre actuel</option>
+                            <option value="S1">Semestre 1</option>
+                            <option value="S2">Semestre 2</option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Graphiques de performance -->
+            <div class="dashboard-grid">
+                <div class="dashboard-card chart-card">
+                    <div class="card-header">
+                        <h3>Distribution des notes</h3>
+                        <div class="card-actions">
+                            <button class="btn-card-action" title="Options">
+                                <i class="fas fa-cog"></i>
+                            </button>
+                        </div>
+                    </div>
+                    <div class="card-content">
+                        <div style="height: 300px; display: flex; align-items: center; justify-content: center; background: var(--gray-50); border-radius: var(--border-radius-md); color: var(--gray-500);">
+                            <div style="text-align: center;">
+                                <i class="fas fa-chart-bar" style="font-size: 3rem; margin-bottom: 1rem; opacity: 0.5;"></i>
+                                <p>Histogramme de distribution des notes</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="dashboard-card">
+                    <div class="card-header">
+                        <h3>Top 10 des étudiants</h3>
+                    </div>
+                    <div class="card-content">
+                        <div class="ranking-list">
+                            <div class="ranking-item">
+                                <div class="rank-position">1</div>
+                                <img src="https://images.unsplash.com/photo-1494790108755-2616b612b494?w=40&h=40&fit=crop&crop=face" class="profile-img" alt="Photo">
+                                <div class="rank-info">
+                                    <div class="rank-name">Sophie Martin</div>
+                                    <div class="rank-details">L3 Informatique</div>
+                                </div>
+                                <div class="rank-score">18.5</div>
+                            </div>
+                            <div class="ranking-item">
+                                <div class="rank-position">2</div>
+                                <img src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=40&h=40&fit=crop&crop=face" class="profile-img" alt="Photo">
+                                <div class="rank-info">
+                                    <div class="rank-name">Thomas Dubois</div>
+                                    <div class="rank-details">L2 Mathématiques</div>
+                                </div>
+                                <div class="rank-score">17.8</div>
+                            </div>
+                            <div class="ranking-item">
+                                <div class="rank-position">3</div>
+                                <img src="https://images.unsplash.com/photo-1438761681033-6461ffad8d80?w=40&h=40&fit=crop&crop=face" class="profile-img" alt="Photo">
+                                <div class="rank-info">
+                                    <div class="rank-name">Emma Laurent</div>
+                                    <div class="rank-details">L1 Physique</div>
+                                </div>
+                                <div class="rank-score">17.2</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Table des notes récentes -->
+            <div class="table-card">
+                <div class="table-header">
+                    <h3>Notes récemment saisies</h3>
+                    <div class="table-actions">
+                        <button class="btn-table-action" title="Filtrer">
+                            <i class="fas fa-filter"></i>
+                        </button>
+                        <button class="btn-table-action" title="Exporter">
+                            <i class="fas fa-download"></i>
+                        </button>
+                    </div>
+                </div>
+                <div class="table-content">
+                    <table class="custom-table">
+                        <thead>
+                        <tr>
+                            <th>Étudiant</th>
+                            <th>Matière</th>
+                            <th>Type d'évaluation</th>
+                            <th>Note</th>
+                            <th>Coefficient</th>
+                            <th>Date</th>
+                            <th>Actions</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr>
+                            <td>
+                                <div style="display: flex; align-items: center; gap: 12px;">
+                                    <img src="https://images.unsplash.com/photo-1494790108755-2616b612b494?w=40&h=40&fit=crop&crop=face" class="profile-img" alt="Photo">
+                                    <div>
+                                        <div style="font-weight: 600;">Marie Dubois</div>
+                                        <div style="font-size: 0.8rem; color: var(--gray-500);">20230001</div>
+                                    </div>
+                                </div>
+                            </td>
+                            <td>Mathématiques</td>
+                            <td>Partiel</td>
+                            <td><span class="grade-score excellent">16.5</span></td>
+                            <td>3</td>
+                            <td>15/12/2023</td>
+                            <td>
+                                <button class="btn btn-sm btn-warning" title="Modifier">
+                                    <i class="fas fa-edit"></i>
+                                </button>
+                                <button class="btn btn-sm btn-info" title="Détails">
+                                    <i class="fas fa-eye"></i>
+                                </button>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <div style="display: flex; align-items: center; gap: 12px;">
+                                    <img src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=40&h=40&fit=crop&crop=face" class="profile-img" alt="Photo">
+                                    <div>
+                                        <div style="font-weight: 600;">Jean Martin</div>
+                                        <div style="font-size: 0.8rem; color: var(--gray-500);">20230002</div>
+                                    </div>
+                                </div>
+                            </td>
+                            <td>Informatique</td>
+                            <td>Contrôle continu</td>
+                            <td><span class="grade-score good">14.0</span></td>
+                            <td>2</td>
+                            <td>14/12/2023</td>
+                            <td>
+                                <button class="btn btn-sm btn-warning" title="Modifier">
+                                    <i class="fas fa-edit"></i>
+                                </button>
+                                <button class="btn btn-sm btn-info" title="Détails">
+                                    <i class="fas fa-eye"></i>
+                                </button>
+                            </td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+
+        <!-- Section Absences -->
+        <div id="absences-section" class="content-section">
+            <div class="section-header">
+                <div class="section-title">
+                    <h1>Gestion des Absences</h1>
+                    <p>Suivi de l'assiduité et des présences</p>
+                </div>
+                <div class="section-actions">
+                    <button class="btn btn-secondary">
+                        <i class="fas fa-file-export"></i>
+                        Rapport absences
+                    </button>
+                    <button class="btn btn-primary">
+                        <i class="fas fa-plus"></i>
+                        Saisir absence
+                    </button>
+                </div>
+            </div>
+
+            <!-- Statistiques des absences -->
+            <div class="stats-grid">
+                <div class="stat-card primary">
+                    <div class="stat-icon">
+                        <i class="fas fa-user-check"></i>
+                    </div>
+                    <div class="stat-content">
+                        <div class="stat-number">92%</div>
+                        <div class="stat-label">Taux de présence</div>
+                        <div class="stat-trend positive">
+                            <i class="fas fa-arrow-up"></i> +2% ce mois
+                        </div>
+                    </div>
+                </div>
+
+                <div class="stat-card warning">
+                    <div class="stat-icon">
+                        <i class="fas fa-user-times"></i>
+                    </div>
+                    <div class="stat-content">
+                        <div class="stat-number">126</div>
+                        <div class="stat-label">Absences cette semaine</div>
+                        <div class="stat-trend negative">
+                            <i class="fas fa-arrow-up"></i> +15%
+                        </div>
+                    </div>
+                </div>
+
+                <div class="stat-card danger">
+                    <div class="stat-icon">
+                        <i class="fas fa-exclamation-triangle"></i>
+                    </div>
+                    <div class="stat-content">
+                        <div class="stat-number">23</div>
+                        <div class="stat-label">Étudiants à risque</div>
+                        <div class="stat-trend negative">
+                            <i class="fas fa-warning"></i> > 20% d'absences
+                        </div>
+                    </div>
+                </div>
+
+                <div class="stat-card info">
+                    <div class="stat-icon">
+                        <i class="fas fa-file-medical"></i>
+                    </div>
+                    <div class="stat-content">
+                        <div class="stat-number">34</div>
+                        <div class="stat-label">Absences justifiées</div>
+                        <div class="stat-trend neutral">
+                            <i class="fas fa-check"></i> Cette semaine
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Filtres absences -->
+            <div class="filters-card">
+                <div class="filters-grid">
+                    <div class="filter-item">
+                        <label>Période</label>
+                        <select class="form-select" id="filterAbsencePeriod">
+                            <option value="today">Aujourd'hui</option>
+                            <option value="week">Cette semaine</option>
+                            <option value="month">Ce mois</option>
+                            <option value="semester">Ce semestre</option>
+                        </select>
+                    </div>
+                    <div class="filter-item">
+                        <label>Type d'absence</label>
+                        <select class="form-select" id="filterAbsenceType">
+                            <option value="">Tous les types</option>
+                            <option value="justified">Justifiée</option>
+                            <option value="unjustified">Non justifiée</option>
+                            <option value="medical">Médicale</option>
+                            <option value="administrative">Administrative</option>
+                        </select>
+                    </div>
+                    <div class="filter-item">
+                        <label>Matière</label>
+                        <select class="form-select" id="filterAbsenceSubject">
+                            <option value="">Toutes les matières</option>
+                            <option value="mathematiques">Mathématiques</option>
+                            <option value="informatique">Informatique</option>
+                            <option value="physique">Physique</option>
+                        </select>
+                    </div>
+                    <div class="filter-item">
+                        <label>Rechercher</label>
+                        <div class="input-group">
+                            <i class="fas fa-search"></i>
+                            <input type="text" placeholder="Nom étudiant..." id="searchAbsence">
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Graphiques absences -->
+            <div class="dashboard-grid">
+                <div class="dashboard-card chart-card">
+                    <div class="card-header">
+                        <h3>Évolution des absences</h3>
+                    </div>
+                    <div class="card-content">
+                        <div style="height: 300px; display: flex; align-items: center; justify-content: center; background: var(--gray-50); border-radius: var(--border-radius-md); color: var(--gray-500);">
+                            <div style="text-align: center;">
+                                <i class="fas fa-chart-line" style="font-size: 3rem; margin-bottom: 1rem; opacity: 0.5;"></i>
+                                <p>Graphique d'évolution des absences par semaine</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="dashboard-card">
+                    <div class="card-header">
+                        <h3>Étudiants les plus absents</h3>
+                    </div>
+                    <div class="card-content">
+                        <div class="absence-list">
+                            <div class="absence-item alert">
+                                <img src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=40&h=40&fit=crop&crop=face" class="profile-img" alt="Photo">
+                                <div class="absence-info">
+                                    <div class="absence-name">Pierre Durand</div>
+                                    <div class="absence-details">L2 Informatique • 28% d'absences</div>
+                                </div>
+                                <div class="absence-actions">
+                                    <button class="btn btn-sm btn-warning">
+                                        <i class="fas fa-bell"></i>
+                                    </button>
+                                </div>
+                            </div>
+                            <div class="absence-item warning">
+                                <img src="https://images.unsplash.com/photo-1438761681033-6461ffad8d80?w=40&h=40&fit=crop&crop=face" class="profile-img" alt="Photo">
+                                <div class="absence-info">
+                                    <div class="absence-name">Julie Moreau</div>
+                                    <div class="absence-details">L1 Mathématiques • 22% d'absences</div>
+                                </div>
+                                <div class="absence-actions">
+                                    <button class="btn btn-sm btn-info">
+                                        <i class="fas fa-eye"></i>
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Table des absences -->
+            <div class="table-card">
+                <div class="table-header">
+                    <h3>Absences récentes</h3>
+                    <div class="table-actions">
+                        <button class="btn-table-action" title="Justifier en lot">
+                            <i class="fas fa-check-double"></i>
+                        </button>
+                        <button class="btn-table-action" title="Exporter">
+                            <i class="fas fa-download"></i>
+                        </button>
+                    </div>
+                </div>
+                <div class="table-content">
+                    <table class="custom-table">
+                        <thead>
+                        <tr>
+                            <th>
+                                <input type="checkbox" id="selectAll">
+                            </th>
+                            <th>Étudiant</th>
+                            <th>Matière</th>
+                            <th>Date & Heure</th>
+                            <th>Type</th>
+                            <th>Statut</th>
+                            <th>Justification</th>
+                            <th>Actions</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr>
+                            <td><input type="checkbox"></td>
+                            <td>
+                                <div style="display: flex; align-items: center; gap: 12px;">
+                                    <img src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=40&h=40&fit=crop&crop=face" class="profile-img" alt="Photo">
+                                    <div>
+                                        <div style="font-weight: 600;">Jean Martin</div>
+                                        <div style="font-size: 0.8rem; color: var(--gray-500);">20230002</div>
+                                    </div>
+                                </div>
+                            </td>
+                            <td>Mathématiques</td>
+                            <td>15/12/2023 - 09h00</td>
+                            <td>Cours magistral</td>
+                            <td><span class="badge bg-danger">Non justifiée</span></td>
+                            <td>-</td>
+                            <td>
+                                <button class="btn btn-sm btn-success" title="Justifier">
+                                    <i class="fas fa-check"></i>
+                                </button>
+                                <button class="btn btn-sm btn-warning" title="Contacter">
+                                    <i class="fas fa-envelope"></i>
+                                </button>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td><input type="checkbox"></td>
+                            <td>
+                                <div style="display: flex; align-items: center; gap: 12px;">
+                                    <img src="https://images.unsplash.com/photo-1494790108755-2616b612b494?w=40&h=40&fit=crop&crop=face" class="profile-img" alt="Photo">
+                                    <div>
+                                        <div style="font-weight: 600;">Marie Dubois</div>
+                                        <div style="font-size: 0.8rem; color: var(--gray-500);">20230001</div>
+                                    </div>
+                                </div>
+                            </td>
+                            <td>Informatique</td>
+                            <td>14/12/2023 - 14h00</td>
+                            <td>TP</td>
+                            <td><span class="badge bg-success">Justifiée</span></td>
+                            <td>Certificat médical</td>
+                            <td>
+                                <button class="btn btn-sm btn-info" title="Voir justificatif">
+                                    <i class="fas fa-eye"></i>
+                                </button>
+                            </td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+
+
+
+        <!-- Section Examens -->
+        <div id="examens-section" class="content-section">
+            <div class="section-header">
+                <div class="section-title">
+                    <h1>Gestion des Examens</h1>
+                    <p>Planifiez et organisez les évaluations</p>
+                </div>
+                <div class="section-actions">
+                    <button class="btn btn-secondary" onclick="app.exportExamSchedule()">
+                        <i class="fas fa-calendar-alt"></i>
+                        Planning examens
+                    </button>
+                    <button class="btn btn-primary" onclick="app.showAddExamModal()">
+                        <i class="fas fa-plus"></i>
+                        Programmer un examen
+                    </button>
+                </div>
+            </div>
+
+            <!-- Statistiques examens -->
+            <div class="stats-grid" style="grid-template-columns: repeat(4, 1fr);">
+                <div class="stat-card info">
+                    <div class="stat-icon">
+                        <i class="fas fa-calendar-check"></i>
+                    </div>
+                    <div class="stat-content">
+                        <div class="stat-number" id="upcomingExams">8</div>
+                        <div class="stat-label">Examens à venir</div>
+                        <div class="stat-trend positive">
+                            <i class="fas fa-arrow-up"></i> Cette semaine
+                        </div>
+                    </div>
+                </div>
+
+                <div class="stat-card success">
+                    <div class="stat-icon">
+                        <i class="fas fa-check-circle"></i>
+                    </div>
+                    <div class="stat-content">
+                        <div class="stat-number" id="completedExams">24</div>
+                        <div class="stat-label">Examens terminés</div>
+                        <div class="stat-trend positive">
+                            <i class="fas fa-arrow-up"></i> Ce mois
+                        </div>
+                    </div>
+                </div>
+
+                <div class="stat-card warning">
+                    <div class="stat-icon">
+                        <i class="fas fa-users"></i>
+                    </div>
+                    <div class="stat-content">
+                        <div class="stat-number" id="examStudents">456</div>
+                        <div class="stat-label">Étudiants concernés</div>
+                        <div class="stat-trend neutral">
+                            <i class="fas fa-minus"></i> Total
+                        </div>
+                    </div>
+                </div>
+
+                <div class="stat-card primary">
+                    <div class="stat-icon">
+                        <i class="fas fa-clipboard-list"></i>
+                    </div>
+                    <div class="stat-content">
+                        <div class="stat-number" id="pendingGrades">12</div>
+                        <div class="stat-label">Notes en attente</div>
+                        <div class="stat-trend negative">
+                            <i class="fas fa-clock"></i> À saisir
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Filtres examens -->
+            <div class="filters-card">
+                <div class="filters-grid">
+                    <div class="filter-item">
+                        <label>Période</label>
+                        <select class="form-select" id="filterExamPeriod" onchange="app.filterExams()">
+                            <option value="all">Toutes les périodes</option>
+                            <option value="upcoming">À venir</option>
+                            <option value="this-week">Cette semaine</option>
+                            <option value="this-month">Ce mois</option>
+                            <option value="completed">Terminés</option>
+                        </select>
+                    </div>
+                    <div class="filter-item">
+                        <label>Type d'examen</label>
+                        <select class="form-select" id="filterExamType" onchange="app.filterExams()">
+                            <option value="">Tous les types</option>
+                            <option value="partiel">Partiel</option>
+                            <option value="final">Examen final</option>
+                            <option value="rattrapage">Rattrapage</option>
+                            <option value="oral">Oral</option>
+                        </select>
+                    </div>
+                    <div class="filter-item">
+                        <label>Département</label>
+                        <select class="form-select" id="filterExamDepartment" onchange="app.filterExams()">
+                            <option value="">Tous les départements</option>
+                            <option value="informatique">Informatique</option>
+                            <option value="mathematiques">Mathématiques</option>
+                            <option value="physique">Physique</option>
+                        </select>
+                    </div>
+                    <div class="filter-item">
+                        <label>Rechercher</label>
+                        <div class="input-group">
+                            <i class="fas fa-search"></i>
+                            <input type="text" placeholder="Cours ou enseignant..." id="searchExam" onkeyup="app.filterExams()">
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Calendrier des examens -->
+            <div class="exam-calendar-container">
+                <div class="calendar-section">
+                    <div class="table-card">
+                        <div class="table-header">
+                            <h3>Planning des examens</h3>
+                            <div class="table-actions">
+                                <button class="btn-table-action" onclick="app.printExamSchedule()" title="Imprimer">
+                                    <i class="fas fa-print"></i>
+                                </button>
+                            </div>
+                        </div>
+                        <div class="table-content">
+                            <table class="custom-table" id="examsTable">
+                                <thead>
+                                <tr>
+                                    <th>Date & Heure</th>
+                                    <th>Cours</th>
+                                    <th>Type</th>
+                                    <th>Enseignant</th>
+                                    <th>Salle</th>
+                                    <th>Durée</th>
+                                    <th>Étudiants</th>
+                                    <th>Statut</th>
+                                    <th>Actions</th>
+                                </tr>
+                                </thead>
+                                <tbody id="examsTableBody">
+                                <!-- Les données seront chargées dynamiquement -->
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Section Soutenances -->
+        <div id="soutenances-section" class="content-section">
+            <div class="section-header">
+                <div class="section-title">
+                    <h1>Gestion des Soutenances</h1>
+                    <p>Organisez les soutenances de projets et mémoires</p>
+                </div>
+                <div class="section-actions">
+                    <button class="btn btn-secondary" onclick="app.exportDefenseSchedule()">
+                        <i class="fas fa-file-export"></i>
+                        Exporter planning
+                    </button>
+                    <button class="btn btn-primary" onclick="app.showAddDefenseModal()">
+                        <i class="fas fa-plus"></i>
+                        Programmer une soutenance
+                    </button>
+                </div>
+            </div>
+
+            <!-- Statistiques soutenances -->
+            <div class="stats-grid" style="grid-template-columns: repeat(3, 1fr);">
+                <div class="stat-card primary">
+                    <div class="stat-icon">
+                        <i class="fas fa-presentation"></i>
+                    </div>
+                    <div class="stat-content">
+                        <div class="stat-number" id="totalDefenses">15</div>
+                        <div class="stat-label">Soutenances programmées</div>
+                        <div class="stat-trend positive">
+                            <i class="fas fa-arrow-up"></i> +3 cette semaine
+                        </div>
+                    </div>
+                </div>
+
+                <div class="stat-card info">
+                    <div class="stat-icon">
+                        <i class="fas fa-users-cog"></i>
+                    </div>
+                    <div class="stat-content">
+                        <div class="stat-number" id="availableJury">8</div>
+                        <div class="stat-label">Jurys disponibles</div>
+                        <div class="stat-trend neutral">
+                            <i class="fas fa-minus"></i> Professeurs
+                        </div>
+                    </div>
+                </div>
+
+                <div class="stat-card success">
+                    <div class="stat-icon">
+                        <i class="fas fa-trophy"></i>
+                    </div>
+                    <div class="stat-content">
+                        <div class="stat-number" id="completedDefenses">42</div>
+                        <div class="stat-label">Soutenances terminées</div>
+                        <div class="stat-trend positive">
+                            <i class="fas fa-check"></i> Cette année
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Timeline des soutenances -->
+            <div class="defense-timeline-container">
+                <div class="table-card">
+                    <div class="table-header">
+                        <h3>Planning des soutenances</h3>
+                        <div class="view-toggles">
+                            <button class="btn btn-sm btn-secondary active" onclick="app.switchDefenseView('timeline')">
+                                <i class="fas fa-list"></i> Timeline
+                            </button>
+                            <button class="btn btn-sm btn-secondary" onclick="app.switchDefenseView('calendar')">
+                                <i class="fas fa-calendar"></i> Calendrier
+                            </button>
+                        </div>
+                    </div>
+                    <div class="table-content">
+                        <div class="defense-timeline" id="defenseTimeline">
+                            <!-- Timeline sera générée dynamiquement -->
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Modal Ajout Créneau -->
+        <div class="modal fade" id="addScheduleModal" tabindex="-1">
+            <div class="modal-dialog modal-lg">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title">Ajouter un créneau</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                    </div>
+                    <div class="modal-body">
+                        <form id="addScheduleForm">
+                            <div class="form-grid">
+                                <div class="form-group">
+                                    <label>Cours *</label>
+                                    <select class="form-select" name="courseId" required>
+                                        <option value="">Sélectionner un cours...</option>
+                                    </select>
+                                </div>
+                                <div class="form-group">
+                                    <label>Type de cours *</label>
+                                    <select class="form-select" name="type" required>
+                                        <option value="">Sélectionner...</option>
+                                        <option value="cours">Cours magistral</option>
+                                        <option value="td">Travaux dirigés</option>
+                                        <option value="tp">Travaux pratiques</option>
+                                        <option value="exam">Examen</option>
+                                    </select>
+                                </div>
+                                <div class="form-group">
+                                    <label>Jour *</label>
+                                    <select class="form-select" name="day" required>
+                                        <option value="">Sélectionner...</option>
+                                        <option value="monday">Lundi</option>
+                                        <option value="tuesday">Mardi</option>
+                                        <option value="wednesday">Mercredi</option>
+                                        <option value="thursday">Jeudi</option>
+                                        <option value="friday">Vendredi</option>
+                                        <option value="saturday">Samedi</option>
+                                    </select>
+                                </div>
+                                <div class="form-group">
+                                    <label>Heure de début *</label>
+                                    <input type="time" class="form-control" name="startTime" required>
+                                </div>
+                                <div class="form-group">
+                                    <label>Heure de fin *</label>
+                                    <input type="time" class="form-control" name="endTime" required>
+                                </div>
+                                <div class="form-group">
+                                    <label>Salle *</label>
+                                    <input type="text" class="form-control" name="room" required placeholder="Ex: A101">
+                                </div>
+                                <div class="form-group full-width">
+                                    <label>Remarques</label>
+                                    <textarea class="form-control" name="notes" rows="2" placeholder="Remarques particulières..."></textarea>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Annuler</button>
+                        <button type="button" class="btn btn-primary" onclick="app.addScheduleSlot()">Enregistrer</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Modal Ajout Examen -->
+        <div class="modal fade" id="addExamModal" tabindex="-1">
+            <div class="modal-dialog modal-lg">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title">Programmer un examen</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                    </div>
+                    <div class="modal-body">
+                        <form id="addExamForm">
+                            <div class="form-grid">
+                                <div class="form-group">
+                                    <label>Cours *</label>
+                                    <select class="form-select" name="courseId" required>
+                                        <option value="">Sélectionner un cours...</option>
+                                    </select>
+                                </div>
+                                <div class="form-group">
+                                    <label>Type d'examen *</label>
+                                    <select class="form-select" name="examType" required>
+                                        <option value="">Sélectionner...</option>
+                                        <option value="partiel">Partiel</option>
+                                        <option value="final">Examen final</option>
+                                        <option value="rattrapage">Rattrapage</option>
+                                        <option value="oral">Oral</option>
+                                    </select>
+                                </div>
+                                <div class="form-group">
+                                    <label>Date *</label>
+                                    <input type="date" class="form-control" name="examDate" required>
+                                </div>
+                                <div class="form-group">
+                                    <label>Heure de début *</label>
+                                    <input type="time" class="form-control" name="startTime" required>
+                                </div>
+                                <div class="form-group">
+                                    <label>Durée (en minutes) *</label>
+                                    <input type="number" class="form-control" name="duration" required min="30" max="300" value="120">
+                                </div>
+                                <div class="form-group">
+                                    <label>Salle *</label>
+                                    <input type="text" class="form-control" name="room" required placeholder="Ex: Amphi A">
+                                </div>
+                                <div class="form-group full-width">
+                                    <label>Instructions particulières</label>
+                                    <textarea class="form-control" name="instructions" rows="3" placeholder="Documents autorisés, matériel requis..."></textarea>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Annuler</button>
+                        <button type="button" class="btn btn-primary" onclick="app.addExam()">Programmer</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+    </div>
+</div>
+
+<!-- Modal Ajout Étudiant -->
+<div class="modal fade" id="addStudentModal" tabindex="-1">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Ajouter un étudiant</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+            </div>
+            <div class="modal-body">
+                <form id="addStudentForm">
+                    <div class="form-grid">
+                        <div class="form-group">
+                            <label>Nom *</label>
+                            <input type="text" class="form-control" name="nom" required>
+                        </div>
+                        <div class="form-group">
+                            <label>Prénom *</label>
+                            <input type="text" class="form-control" name="prenom" required>
+                        </div>
+                        <div class="form-group">
+                            <label>Date de naissance *</label>
+                            <input type="date" class="form-control" name="dateNaissance" required>
+                        </div>
+                        <div class="form-group">
+                            <label>Nationalité</label>
+                            <input type="text" class="form-control" name="nationalite">
+                        </div>
+                        <div class="form-group full-width">
+                            <label>Adresse</label>
+                            <textarea class="form-control" name="adresse" rows="2"></textarea>
+                        </div>
+                        <div class="form-group">
+                            <label>Email *</label>
+                            <input type="email" class="form-control" name="email" required>
+                        </div>
+                        <div class="form-group">
+                            <label>Téléphone</label>
+                            <input type="tel" class="form-control" name="telephone">
+                        </div>
+                        <div class="form-group">
+                            <label>Département *</label>
+                            <select class="form-select" name="departement" required>
+                                <option value="">Sélectionner...</option>
+                                <option value="informatique">Informatique</option>
+                                <option value="mathematiques">Mathématiques</option>
+                                <option value="physique">Physique</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label>Niveau *</label>
+                            <select class="form-select" name="niveau" required>
+                                <option value="">Sélectionner...</option>
+                                <option value="L1">Licence 1</option>
+                                <option value="L2">Licence 2</option>
+                                <option value="L3">Licence 3</option>
+                                <option value="M1">Master 1</option>
+                                <option value="M2">Master 2</option>
+                            </select>
+                        </div>
+                        <div class="form-group full-width">
+                            <label>Photo de profil</label>
+                            <input type="file" class="form-control" name="photo" accept="image/*">
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Annuler</button>
+                <button type="button" class="btn btn-primary" onclick="addStudent()">Enregistrer</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script src="js/bootstrap.bundle.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script src="js/app.js"></script>
+</body>
+</html>
